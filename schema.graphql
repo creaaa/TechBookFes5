@@ -1,0 +1,53 @@
+type Group {
+    id: ID!
+    name: String!
+    composedIn: Int
+    songs: [Song] @relation(name: "IN_GROUP", direction: IN)
+    members: [Idol] @relation(name: "IN_GROUP", direction: IN)
+    albums: [Album] @relation(name: "IN_GROUP", direction: In)
+}
+
+type Idol {
+    id: ID!
+    name: String!
+    group: [Group] @relation(name: "IN_GROUP", direction: OUT)
+}
+
+type Song {
+    id: ID!
+    name: String!
+    duration: Int
+    times: Int
+    group: Group @relation(name: "IN_GROUP", direction: OUT)
+    album: [Album] @relation(name: "IN_ALBUM", direction: OUT)
+    lyricist: [Composer] @relation(name: "LYRICED_BY", direction: OUT)
+    composer: [Composer] @relation(name: "COMPOSED_BY", direction: OUT)
+    arranger: [Composer] @relation(name: "ARRANGED_BY", direction: OUT)
+    premiereDate: String
+    performedAt: [Live] @relation(name: "PERFORMED_AT", direction: OUT)
+}
+
+type Album {
+    id: ID!
+    name: String!
+    numOfDisks: Int
+    releasedIn: Int
+    songs: [Song] @relation(name: "IN_ALBUM", direction: IN)
+    artist: Group @relation(name: "IN_GROUP", direction: OUT)
+}
+
+type Live {
+    id: ID!
+    name: String!
+    prefecture: String
+    date: String
+    setlist: [Song] @relation(name: "PERFORMED_AT", direction: IN)
+}
+
+type Composer {
+    id: ID!
+    name: String!
+    lyriced: [Song] @relation(name: "LYRICED_BY", direction: IN)
+    composed: [Song] @relation(name: "COMPOSED_BY", direction: IN)
+    arranged: [Song] @relation(name: "ARRANGED_BY", direction: IN)
+}
